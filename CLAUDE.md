@@ -1,12 +1,15 @@
-# dodge-drop
+# Dodge Drop
 
-A free game on FreeGameStore.
+Dodge Drop is a simple FreeGameStore canvas game where the player moves left and right to avoid falling objects.
 
-- Subdomain: `dodge-drop.freegamestore.online`
-- Dev: `pnpm install && pnpm dev`
-- Build: `pnpm build`
-- Deploy: `git push origin main` (auto-deploys to R2 via GitHub Actions)
+## Platform conventions
 
-Free, MIT-licensed, no tracking. For platform conventions, read
-https://freegamestore.online/skills.md
-before writing or changing anything.
+See https://raw.githubusercontent.com/freegamestore-online/freegamestore/main/SKILLS.md for platform conventions.
+
+## Development
+
+```bash
+pnpm install
+pnpm dev
+pnpm build
+npx -y @freegamestore/cli@latest check
