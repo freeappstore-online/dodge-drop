@@ -1,0 +1,14 @@
+{
+  "name": "dodge-drop",
+  "private": true,
+  "packageManager": "pnpm@10.30.3",
+  "engines": { "node": ">=22" },
+  "pnpm": { "onlyBuiltDependencies": ["esbuild"] },
+  "scripts": {
+    "dev": "pnpm --filter @dodge-drop/web dev",
+    "build": "pnpm --filter @dodge-drop/web build",
+    "preview": "pnpm --filter @dodge-drop/web preview",
+    "typecheck": "pnpm --filter @dodge-drop/web exec tsc -b",
+    "test": "pnpm --filter @dodge-drop/web test"
+  }
+}
