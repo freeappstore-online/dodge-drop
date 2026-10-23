@@ -9,9 +9,9 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@freegamestore/games": "^0.14.0",
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "@freeappstore/sdk": "^0.15.9"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1",

@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { GameShell, GameTopbar, GameAuth } from "@freegamestore/games";
+import { initApp } from "@freeappstore/sdk";
+import { Shell } from "@freeappstore/sdk/ui";
+
+const fas = initApp({ appId: "dodge-drop" });
+const navigation = [{ label: "Play", href: "/", title: "Dodge Drop — FreeAppStore" }];
 
 type FallingObject = {
   x: number;
@@ -8,7 +12,7 @@ type FallingObject = {
   speed: number;
 };
 
-export default function App() {
+function DodgeGame() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationRef = useRef<number | null>(null);
 
@@ -48,14 +52,18 @@ export default function App() {
 
   useEffect(() => {
     if (!running) return;
-    const canvas = canvasRef.current as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    const mountedCanvas = canvasRef.current;
+    if (!mountedCanvas) return;
+    const mountedContext = mountedCanvas.getContext("2d");
+    if (!mountedContext) return;
+    const canvas: HTMLCanvasElement = mountedCanvas;
+    const ctx: CanvasRenderingContext2D = mountedContext;
     function resizeCanvas() {
       const parent = canvas.parentElement;
       if (!parent) return;
 
       const width = Math.min(parent.clientWidth, 720);
-      const height = Math.min(window.innerHeight * 0.62, 520);
+      const height = Math.max(120, Math.min(window.innerHeight - 344, 520));
 
       canvas.width = width;
       canvas.height = height;
@@ -65,6 +73,10 @@ export default function App() {
     }
 
     function handleKeyDown(event: KeyboardEvent) {
+      const target = event.target;
+      if (event.defaultPrevented || (target instanceof HTMLElement &&
+          (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)))) return;
+      if (event.key === "ArrowLeft" || event.key === "ArrowRight") event.preventDefault();
       if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") {
         keysRef.current.left = true;
       }
@@ -240,13 +252,10 @@ export default function App() {
   }, [running, highScore]);
 
   return (
-    <GameShell topbar={<GameTopbar title="Dodge Drop" score={score} />}>
-      <GameAuth />
-
-      <main className="flex h-full flex-col items-center justify-center gap-4 px-4 py-6 text-center">
+      <section aria-label="Dodge Drop game" className="flex flex-col items-center justify-center gap-3 px-3 py-3 text-center">
         <div>
           <h1
-            className="text-4xl font-bold"
+            className="sr-only"
             style={{ fontFamily: "Fraunces, serif" }}
           >
             Dodge Drop
@@ -261,7 +270,7 @@ export default function App() {
         <div className="w-full max-w-3xl rounded-2xl border border-white/10 bg-black/20 p-3 shadow-xl">
           <canvas
             ref={canvasRef}
-            className="w-full rounded-xl"
+            className="w-full touch-none rounded-xl"
             aria-label="Dodge Drop game canvas"
           />
         </div>
@@ -284,13 +293,13 @@ export default function App() {
         </div>
 
         <a
-        href="https://freegamestore.online/"
+        href="https://freeappstore.online/"
         target="_blank"
         rel="noreferrer"
         className="text-sm underline"
         style={{ color: "var(--muted)" }}
         >
-          Built for freegamestore.online
+          Built for freeappstore.online
         </a>
 
         {gameOver && (
@@ -301,7 +310,9 @@ export default function App() {
             </p>
           </div>
         )}
-      </main>
-    </GameShell>
+      </section>
   );
+}
+export default function App() {
+  return <Shell app={fas} appName="Dodge Drop" nav={navigation}><DodgeGame /></Shell>;
 }
