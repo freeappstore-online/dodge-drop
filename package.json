@@ -8,7 +8,6 @@
     "dev": "pnpm --filter @dodge-drop/web dev",
     "build": "pnpm --filter @dodge-drop/web build",
     "preview": "pnpm --filter @dodge-drop/web preview",
-    "typecheck": "pnpm --filter @dodge-drop/web exec tsc -b",
-    "test": "pnpm --filter @dodge-drop/web test"
+    "typecheck": "pnpm --filter @dodge-drop/web exec tsc -b"
   }
 }
